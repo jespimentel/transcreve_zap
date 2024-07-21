@@ -101,7 +101,7 @@ def separa_nome_arquivo(caminho_do_arquivo: str) -> str:
     Returns:
         str: Nome do arquivo.
     """
-    separador = '\\'
+    separador = '/' # ou '\\' para o Windows
     if separador in caminho_do_arquivo:
         return caminho_do_arquivo.split(separador)[-1]
     else:
@@ -138,7 +138,7 @@ def main(pasta: str, arquivo_texto: str) -> None:
             arquivo.write(trecho + '\n')
 
 if __name__ == '__main__':
-    pasta = r'C:\Users\jepim\Downloads\WhatsApp Chat - +55 19 99803-XXXX'
-    arquivo_texto = r'C:\Users\jepim\\Downloads\WhatsApp Chat - +55 19 99803-XXXX\_chat.txt'
+    pasta = r'Users/jepim/Downloads/WhatsApp Chat - +55 19 99803-XXXX'
+    arquivo_texto = r'Users/jepim/Downloads/WhatsApp Chat - +55 19 99803-XXXX/_chat.txt'
     print('Iniciando a leitura dos arquivos.')
     main(pasta, arquivo_texto)
