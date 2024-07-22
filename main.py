@@ -120,7 +120,7 @@ def main(pasta: str, arquivo_texto: str) -> None:
     texto_final = []
     arquivo_de_saida = "output.txt"
 
-    with open(arquivo_texto, 'r') as arquivo:
+    with open(arquivo_texto, 'r', encoding='utf-8') as arquivo:
         linha = arquivo.readline()
         while linha:
             texto_final.append(linha)
@@ -133,12 +133,13 @@ def main(pasta: str, arquivo_texto: str) -> None:
                     #texto_final.append(formata_resposta(traduz(elemento[1])))
             linha = arquivo.readline()
 
-    with open(arquivo_de_saida, 'w') as arquivo:
+    with open(arquivo_de_saida, 'w', encoding='utf-8') as arquivo:
         for trecho in texto_final:
             arquivo.write(trecho + '\n')
 
 if __name__ == '__main__':
     pasta = r'C:\Users\jepim\Downloads\WhatsApp Chat - +55 19 99803-XXXX'
-    arquivo_texto = r'C:\Users\jepim\\Downloads\WhatsApp Chat - +55 19 99803-XXXX\_chat.txt'
+    arquivo_texto = r'C:\Users\jepim\Downloads\WhatsApp Chat - +55 19 99803-XXXX\_chat.txt'
     print('Iniciando a leitura dos arquivos.')
     main(pasta, arquivo_texto)
+    print('Programa concluído!')
