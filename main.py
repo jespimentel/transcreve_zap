@@ -1,5 +1,5 @@
 #pip install git+https://github.com/openai/whisper.git 
-
+# Requisito: FFmpeg previamente instalado (configure o path nas variáveis de ambiente)
 import os
 import whisper
 import hashlib
@@ -101,7 +101,7 @@ def separa_nome_arquivo(caminho_do_arquivo: str) -> str:
     Returns:
         str: Nome do arquivo.
     """
-    separador = '/' # ou '\\' para o Windows
+    separador = '\\' # '/' (para MacOS e Linux)
     if separador in caminho_do_arquivo:
         return caminho_do_arquivo.split(separador)[-1]
     else:
@@ -126,7 +126,7 @@ def main(pasta: str, arquivo_texto: str) -> None:
             texto_final.append(linha)
             for elemento in arquivos_e_nomes:
                 if elemento[0] in linha:
-                    texto_final.append(f"Transcrição com IA do arquivo {elemento[0]}")
+                    texto_final.append(f"Transcrição automática do arquivo {elemento[0]}")
                     print(f"Transcrevendo o arquivo {elemento[0]}. Aguarde...")
                     texto_final.append(f"Hash do arquivo (sha256): {extrai_hash(elemento[1])}")
                     texto_final.append(formata_resposta(transcreve(elemento[1])))
@@ -138,7 +138,7 @@ def main(pasta: str, arquivo_texto: str) -> None:
             arquivo.write(trecho + '\n')
 
 if __name__ == '__main__':
-    pasta = r'Users/jepim/Downloads/WhatsApp Chat - +55 19 99803-XXXX'
-    arquivo_texto = r'Users/jepim/Downloads/WhatsApp Chat - +55 19 99803-XXXX/_chat.txt'
+    pasta = r'C:\Users\jepim\Downloads\WhatsApp Chat - +55 19 99803-XXXX'
+    arquivo_texto = r'C:\Users\jepim\\Downloads\WhatsApp Chat - +55 19 99803-XXXX\_chat.txt'
     print('Iniciando a leitura dos arquivos.')
     main(pasta, arquivo_texto)
