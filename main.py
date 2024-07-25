@@ -73,7 +73,7 @@ def extrai_hash(path_midia: str, BLOCK_SIZE: int = 65536) -> str:
             fb = f.read(BLOCK_SIZE)
     return file_hash.hexdigest()
 
-def lista_arquivos(pasta: str, extensoes: tuple = ('mp4', 'opus')) -> List[str]:
+def lista_arquivos(pasta: str, extensoes: tuple = ('mp4', 'opus', 'ogg')) -> List[str]:
     """
     Lista os arquivos de mídia em uma pasta com as extensões especificadas.
 
@@ -91,23 +91,8 @@ def lista_arquivos(pasta: str, extensoes: tuple = ('mp4', 'opus')) -> List[str]:
                 path_arquivos.append(os.path.join(dirpath, f))
     return path_arquivos
 
-def separa_nome_arquivo(caminho_do_arquivo: str) -> str:
-    """
-    Extrai o nome do arquivo a partir do caminho completo.
 
-    Args:
-        caminho_do_arquivo (str): Caminho completo do arquivo.
-
-    Returns:
-        str: Nome do arquivo.
-    """
-    separador = '\\' # '/' (para MacOS e Linux)
-    if separador in caminho_do_arquivo:
-        return caminho_do_arquivo.split(separador)[-1]
-    else:
-        return ''
-
-def main(pasta: str, arquivo_texto: str) -> None:
+def main(pasta: str) -> None:
     """
     Processa os arquivos de mídia em uma pasta e gera um arquivo de saída com as transcrições.
 
@@ -116,30 +101,21 @@ def main(pasta: str, arquivo_texto: str) -> None:
         arquivo_texto (str): Caminho para o arquivo de texto contendo as referências aos arquivos de mídia.
     """
     arquivos_de_midia = lista_arquivos(pasta)
-    arquivos_e_nomes = [(separa_nome_arquivo(x), x) for x in arquivos_de_midia]
     texto_final = []
     arquivo_de_saida = "output.txt"
 
-    with open(arquivo_texto, 'r', encoding='utf-8') as arquivo:
-        linha = arquivo.readline()
-        while linha:
-            texto_final.append(linha)
-            for elemento in arquivos_e_nomes:
-                if elemento[0] in linha:
-                    texto_final.append(f"Transcrição automática do arquivo {elemento[0]}")
-                    print(f"Transcrevendo o arquivo {elemento[0]}. Aguarde...")
-                    texto_final.append(f"Hash do arquivo (sha256): {extrai_hash(elemento[1])}")
-                    texto_final.append(formata_resposta(transcreve(elemento[1])))
-                    #texto_final.append(formata_resposta(traduz(elemento[1])))
-            linha = arquivo.readline()
-
+    for arquivo in arquivos_de_midia:
+        texto_final.append(f"Transcrição automática do arquivo {arquivo}")
+        print(f"Transcrevendo o arquivo {arquivo}. Aguarde...")
+        texto_final.append(f"Hash do arquivo (sha256): {extrai_hash(arquivo)}")
+        texto_final.append(formata_resposta(transcreve(arquivo)))
+    
     with open(arquivo_de_saida, 'w', encoding='utf-8') as arquivo:
         for trecho in texto_final:
             arquivo.write(trecho + '\n')
 
 if __name__ == '__main__':
-    pasta = r'C:\Users\jepim\Downloads\WhatsApp Chat - +55 19 99803-XXXX'
-    arquivo_texto = r'C:\Users\jepim\Downloads\WhatsApp Chat - +55 19 99803-XXXX\_chat.txt'
+    pasta = r'C:\Users\jepim\Downloads\ip_hoje\ip 08.24'
     print('Iniciando a leitura dos arquivos.')
-    main(pasta, arquivo_texto)
+    main(pasta)
     print('Programa concluído!')
